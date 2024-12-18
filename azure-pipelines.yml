@@ -6,7 +6,7 @@ pool:
 
 variables:
   azureSubscription: 'Azure subscription 1'  
-  resourceGroup: 'MyResourceGroup' 
+  resourceGroup: 'MyResources' 
   aksClusterName: 'MyK8sCluster'  
   nodeCount: 2  
 
