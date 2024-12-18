@@ -2,7 +2,7 @@ trigger:
 - main 
 
 pool:
-  vmImage: 'UbuntuVM'  
+  name: 'UbuntuVM'  
 
 variables:
   azureSubscription: 'Azure subscription 1'  
