@@ -2,7 +2,7 @@ trigger:
 - main 
 
 pool:
-  name: 'UbuntuVM'  
+  name: 'SelfHostedAgents'  
 
 variables:
   azureSubscription: 'Azure subscription 1'  
