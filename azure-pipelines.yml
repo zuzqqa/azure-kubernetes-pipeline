@@ -54,11 +54,11 @@ stages:
           helm repo update
           helm upgrade --install nginx-ingress ingress-nginx/ingress-nginx --create-namespace --namespace ingress-nginx --wait
 
-- stage: GetLoadBalancerIP
-  displayName: "Get LoadBalancer IP"
+- stage: DeployIngress
+  displayName: "Deploy Ingress"
   jobs:
-  - job: GetLoadBalancerIPJob
-    displayName: "Get LoadBalancer IP"
+  - job: DeployIngressJob
+    displayName: "Deploy Ingress"
     steps:
     - task: AzureCLI@2
       inputs:
@@ -76,20 +76,9 @@ stages:
             fi
           done
           echo "LoadBalancer IP: $LB_IP"
-          echo "##vso[task.setvariable variable=lbIP]$LB_IP" 
-
-- stage: DeployIngress
-  displayName: "Deploy Ingress"
-  jobs:
-  - job: DeployIngressJob
-    displayName: "Deploy Ingress"
-    steps:
-    - task: AzureCLI@2
-      inputs:
-        azureSubscription: $(azureSubscription)
-        scriptType: 'bash'
-        scriptLocation: 'inlineScript'
-        inlineScript: |
+          
+          echo "$LB_IP my-ingress.local" | sudo tee -a /etc/hosts  # To add the IP to /etc/hosts for testing locally
+          
           echo "Applying Ingress configuration with LoadBalancer IP"
           sed -i 's/my-ingress.local/$(lbIP)/' kubernetes/ingress.yaml
           kubectl apply -f kubernetes/ingress.yaml
