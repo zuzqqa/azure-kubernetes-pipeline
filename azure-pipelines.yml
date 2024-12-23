@@ -80,5 +80,4 @@ stages:
           echo "$LB_IP myapp.zuzqqa.com" | sudo tee -a /etc/hosts
           
           echo "Applying Ingress configuration with LoadBalancer IP"
-          sed -i 's/myapp.zuzqqa.com/$(lbIP)/' kubernetes/ingress.yaml
           kubectl apply -f kubernetes/ingress.yaml
