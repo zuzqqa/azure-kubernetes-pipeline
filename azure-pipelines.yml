@@ -2,11 +2,11 @@ trigger:
 - main 
 
 pool:
-  name: 'SelfHostedAgents'  
+  name: 'SH'  
 
 variables:
   azureSubscription: 'Azure subscription 1'  
-  resourceGroup: 'MyResources' 
+  resourceGroup: 'MyResourceGroup' 
   aksClusterName: 'MyK8sCluster'  
   nodeCount: 2  
 
@@ -22,12 +22,3 @@ steps:
         --name $(aksClusterName) \
         --node-count $(nodeCount) \
         --generate-ssh-keys  
-
-- task: Kubectl@1 
-  inputs:
-    connectionType: 'Azure Resource Manager'  
-    azureSubscription: $(azureSubscription)  
-    azureResourceGroup: $(resourceGroup) 
-    kubernetesCluster: $(aksClusterName)  
-    command: 'apply'  
-    arguments: '-f ./k8s/deployment.yaml'  
