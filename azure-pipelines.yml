@@ -43,8 +43,12 @@ stages:
   - job: DeployNginx
     displayName: "Install Nginx Ingress Controller"
     pool:
-      name: 'SH'  #
+      name: 'SH' 
     steps:
+    - script: |
+        echo "Listing files in the repository"
+        ls -R $(Build.SourcesDirectory)
+      displayName: "Check Files"
     - task: KubernetesManifest@0
       inputs:
         kubernetesServiceConnection: 'MyK8sServiceConnection'
