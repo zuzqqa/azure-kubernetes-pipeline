@@ -34,7 +34,8 @@ stages:
               --node-count $(nodeCount) \
               --location $(location) \
               --generate-ssh-keys
-
+          fi
+          
 - stage: DeployNginxIngress
   displayName: "Deploy Nginx Ingress Controller"
   dependsOn: CreateCluster
