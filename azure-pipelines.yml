@@ -35,7 +35,7 @@ stages:
               --location $(location) \
               --generate-ssh-keys
           fi
-          
+
 - stage: DeployNginxIngress
   displayName: "Deploy Nginx Ingress Controller"
   dependsOn: CreateCluster
@@ -51,4 +51,4 @@ stages:
         namespace: 'ingress-basic'
         manifests: |
           manifests/nginx-ingress.yaml
-        action: 'create'
+        action: 'deploy'
