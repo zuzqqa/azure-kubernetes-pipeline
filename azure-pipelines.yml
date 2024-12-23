@@ -76,7 +76,7 @@ stages:
             fi
           done
           echo "LoadBalancer IP: $LB_IP"
-          echo "##vso[task.setvariable variable=lbIP]$LB_IP" # Set as a variable for further use
+          echo "##vso[task.setvariable variable=lbIP]$LB_IP" 
 
 - stage: DeployIngress
   displayName: "Deploy Ingress"
@@ -91,5 +91,5 @@ stages:
         scriptLocation: 'inlineScript'
         inlineScript: |
           echo "Applying Ingress configuration with LoadBalancer IP"
-          sed -i 's/<LB_IP>/$(lbIP)/' kubernetes/ingress.yaml
+          sed -i 's/my-ingress.local/$(lbIP)/' kubernetes/ingress.yaml
           kubectl apply -f kubernetes/ingress.yaml
