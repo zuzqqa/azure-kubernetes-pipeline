@@ -28,7 +28,7 @@ spec:
         image: k8s.gcr.io/ingress-nginx/controller:v1.9.1
         args:
         - /nginx-ingress-controller
-        - --publish-service=$(POD_NAMESPACE)/ingress-nginx-controller
+        - --publish-service=$(POD_NAMESPACE)/ingress-nginx
         env:
         - name: POD_NAMESPACE
           valueFrom:
