@@ -77,7 +77,7 @@ stages:
           done
           echo "LoadBalancer IP: $LB_IP"
           
-          echo "$LB_IP my-ingress.local" | sudo tee -a /etc/hosts  # To add the IP to /etc/hosts for testing locally
+          echo "$LB_IP my-ingress.local" | sudo tee -a /etc/hosts
           
           echo "Applying Ingress configuration with LoadBalancer IP"
           sed -i 's/my-ingress.local/$(lbIP)/' kubernetes/ingress.yaml
