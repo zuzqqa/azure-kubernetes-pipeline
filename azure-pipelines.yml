@@ -11,16 +11,43 @@ variables:
   location: 'westus'
   nodeCount: 2  
 
-steps:
-- task: AzureCLI@2  
-  inputs:
-    azureSubscription: $(azureSubscription)  
-    scriptType: 'bash'  
-    scriptLocation: 'inlineScript'  
-    inlineScript: |
-      az aks create \
-        --resource-group $(resourceGroup) \
-        --name $(aksClusterName) \
-        --node-count $(nodeCount) \
-        --location $(location) \
-        --generate-ssh-keys  
+stages:
+- stage: CreateCluster
+  displayName: "Create AKS Cluster"
+  jobs:
+  - job: CreateClusterJob
+    displayName: "Create AKS Cluster"
+    steps:
+    - task: AzureCLI@2  
+      inputs:
+        azureSubscription: $(azureSubscription)  
+        scriptType: 'bash'  
+        scriptLocation: 'inlineScript'  
+        inlineScript: |
+          if az aks show --resource-group $(resourceGroup) --name $(aksClusterName) &>/dev/null; then
+            echo "AKS cluster $(aksClusterName) already exists. Skipping creation."
+          else
+            echo "Creating AKS cluster..."
+            az aks create \
+              --resource-group $(resourceGroup) \
+              --name $(aksClusterName) \
+              --node-count $(nodeCount) \
+              --location $(location) \
+              --generate-ssh-keys
+
+- stage: DeployNginxIngress
+  displayName: "Deploy Nginx Ingress Controller"
+  dependsOn: CreateCluster
+  jobs:
+  - job: DeployNginx
+    displayName: "Install Nginx Ingress Controller"
+    pool:
+      name: 'SH'  #
+    steps:
+    - task: KubernetesManifest@0
+      inputs:
+        kubernetesServiceConnection: 'MyK8sServiceConnection'
+        namespace: 'ingress-basic'
+        manifests: |
+          manifests/nginx-ingress.yaml
+        action: 'create'
