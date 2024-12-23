@@ -8,6 +8,7 @@ variables:
   azureSubscription: 'Azure subscription 1'  
   resourceGroup: 'MyResourceGroup' 
   aksClusterName: 'MyK8sCluster'  
+  location: 'westus'
   nodeCount: 2  
 
 steps:
@@ -21,4 +22,5 @@ steps:
         --resource-group $(resourceGroup) \
         --name $(aksClusterName) \
         --node-count $(nodeCount) \
+        --location $(location) \
         --generate-ssh-keys  
