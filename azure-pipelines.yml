@@ -54,6 +54,22 @@ stages:
           helm repo update
           helm upgrade --install nginx-ingress ingress-nginx/ingress-nginx --create-namespace --namespace ingress-nginx --wait
 
+
+- stage: DeployServices
+  displayName: "Deploy Services"
+  jobs:
+  - job: DeployServicesJob
+    displayName: "Deploy Services (test-service)"
+    steps:
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: $(azureSubscription)
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          echo "Applying test-service configuration"
+          kubectl apply -f kubernetes/test-service.yaml
+          
 - stage: DeployIngress
   displayName: "Deploy Ingress"
   jobs:
